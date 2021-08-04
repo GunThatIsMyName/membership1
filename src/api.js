@@ -39,8 +39,6 @@ export const movieApi = {
     })
 }
 
-movieApi.search('The Flash')
-
 export default api;
 
 // const getPopular = (kind)=>{
