@@ -20,7 +20,7 @@ const Grid = styled.div`
   grid-gap:25px;
 `;
 
-export const Section = ({ title, children }) => (
+const Section = ({ title, children }) => (
   <Container>
     <Title>{title}</Title>
     <Grid>{children}</Grid>
@@ -34,3 +34,5 @@ Section.propTypes = {
     PropTypes.node,
   ]),
 };
+
+export default Section;

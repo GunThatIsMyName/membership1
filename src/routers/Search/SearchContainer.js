@@ -6,16 +6,21 @@ export default class HomeContainer extends React.Component {
   state = {
     movieResults: null,
     tvResults: null,
-    searchTerm: "black widow",
+    searchTerm: "",
     error: null,
     loading: false,
   };
-  handleSubmit = () => {
+  handleSubmit = (event) => {
+    event.preventDefault();
     const { searchTerm } = this.state;
     if (searchTerm !== "") {
       this.searchByTerm();
     }
   };
+  updateTerm=(event)=>{
+    const {value}=event.target;
+    this.setState({searchTerm:value})
+  }
   searchByTerm = async () => {
     const { searchTerm } = this.state;
     this.setState({ loading: true });
@@ -24,20 +29,16 @@ export default class HomeContainer extends React.Component {
         data: { results: movieResults },
       } = await movieApi.search(searchTerm);
       const {
-        data: { results: showResults },
+        data: { results: tvResults },
       } = await tvApi.search(searchTerm);
-      this.setState({ movieResults, showResults });
+      this.setState({ movieResults, tvResults });
     } catch {
       this.setState({ error: `Can't find results` });
     } finally {
       this.setState({ loading: false });
     }
   };
-  componentDidMount(){
-    this.handleSubmit();
-  }
   render() {
-    console.log(this.state)
     const { movieResults, tvResults, searchTerm, loading, error } = this.state;
     return (
       <SearchPresenter
@@ -47,6 +48,7 @@ export default class HomeContainer extends React.Component {
         error={error}
         loading={loading}
         handleSubmit={this.handleSubmit}
+        updateTerm={this.updateTerm}
       />
     );
   }
