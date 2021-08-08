@@ -1,16 +1,50 @@
-import React from "react";
-import DetailPresenter from "./DetailPresenter";
+import { movieApi, tvApi } from 'api';
+import React from 'react';
+import DetailPresenter from './DetailPresenter';
 
-export default class DetailContainer extends React.Component {
-  state = {
-    restuls: null,
-    error: null,
-    loading: true,
-  };
+class DetailContainer extends React.Component {
+  constructor(props){
+    super(props)
+    const{location:{pathname}}=props
+    this.state = {
+      result: null,
+      error: null,
+      loading: true,
+      isMovie: pathname.includes("/movie/")
+    };
+  }
+
+  async componentDidMount() {
+    const {
+      match: {
+        params: {id},
+      },
+      history: {push}
+    } = this.props;
+    const {isMovie}=this.state
+    const numberId = Number(id);
+    if (isNaN(numberId)) {
+      return push('/');
+    }
+    let result =null;
+    try{
+      if(isMovie){
+        ({data:result} = await movieApi.movieDetail(numberId))        
+      }else{
+        ({data:result} = await tvApi.showDetail(numberId))        
+      }
+      console.log(result)
+    }catch{
+      this.setState({error:"Can't find anything"})
+    }finally{
+      this.setState({loading:false,result})
+    }
+  }
+
   render() {
-    const { restuls, error, loading } = this.state;
-    return (
-      <DetailPresenter restuls={restuls} error={error} loading={loading} />
-    );
+    const {result, error, loading} = this.state;
+    console.log(this.state)
+    return <DetailPresenter result={result} error={error} loading={loading} />;
   }
 }
+export default DetailContainer;
