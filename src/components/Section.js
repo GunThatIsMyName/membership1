@@ -8,10 +8,16 @@ const Container = styled.div`
   }
 `;
 const Title = styled.span`
-  color:red;
+  color:#fff;
+  font-weight:700;
+  font-size:24px;
 `;
 const Grid = styled.div`
   margin-top:20px;
+  font-size:16px;
+  display:grid;
+  grid-template-columns:repeat(auto-fill,125px);
+  grid-gap:25px;
 `;
 
 export const Section = ({ title, children }) => (
