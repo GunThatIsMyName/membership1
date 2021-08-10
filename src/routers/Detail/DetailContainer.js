@@ -29,11 +29,10 @@ class DetailContainer extends React.Component {
     let result =null;
     try{
       if(isMovie){
-        ({data:result} = await movieApi.movieDetail(numberId))        
+        ({data:result} = await movieApi.movieDetail(numberId))   
       }else{
         ({data:result} = await tvApi.showDetail(numberId))        
       }
-      console.log(result)
     }catch{
       this.setState({error:"Can't find anything"})
     }finally{
